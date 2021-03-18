@@ -13,7 +13,7 @@ import {
 const Paginate = (props) => {
   const [totalPages, setTotalPages] = useState(null);
   const [dataStartingIndex, setDataStartingIndex] = useState(null);
-  const [currentClickedNumber, setCurrentClickedNumberState] = useState(1);
+  const [currentClickedNumber, setCurrentClickedNumberState] = useState(`1`);
   const [pageData, setPageData] = useState(null);
   const prevData = useRef();
 
@@ -121,7 +121,7 @@ const Paginate = (props) => {
         <ArrowContainer>
           {currentClickedNumber !== totalPages ? (
             <div>
-              <span onClick={moveOnePageForward}>&lt;</span>
+              <span onClick={moveOnePageForward}>&gt;</span>
               <span onClick={moveToLastPage}>&gt;</span>
             </div>
           ) : (
