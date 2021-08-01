@@ -153,7 +153,6 @@ export const baseTaglineStyles = styled.h1`
   position: relative;
   z-index: ${(props) => props.theme.zIndex["8th"]};
   text-align: center;
-  margin-top: 4rem;
 
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     font-size: ${(props) => props.theme.fontSizes.xl2};
