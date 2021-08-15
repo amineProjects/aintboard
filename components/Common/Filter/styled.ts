@@ -4,7 +4,7 @@ export const FilterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 5rem;
+  margin-top: auto;
   padding-bottom: 1rem;
   z-index: ${(props) => props.theme.zIndex["7th"]};
 
