@@ -27,7 +27,9 @@ const PrimaryLinkSidebar = ({ buttonName, links, link }: Props) => {
               return link.button ? (
                 <button
                   key={`${link.key}-${i}`}
-                  onClick={() => dispatch(chooseModal(link.type))}
+                  onClick={() =>
+                    dispatch(chooseModal({ modalChosen: link.type }))
+                  }
                   className="link"
                 >
                   {link.linkName}

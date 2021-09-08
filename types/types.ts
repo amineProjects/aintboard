@@ -246,12 +246,8 @@ export interface FilteredOnlineBattlesApiResponse {
 export interface FilteredOnlineBattlesApiData {
   count: number;
   hasMore: boolean;
-  onlineBattles: FilteredOnlineBattlesData[];
+  onlineBattles: OnlineBattlesData[];
 }
-
-export type FilteredOnlineBattlesData = {
-  battles: OnlineBattlesData[];
-};
 
 export interface UserTrophiesApiResponse {
   success: boolean;

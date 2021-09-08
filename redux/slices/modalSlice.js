@@ -1,9 +1,14 @@
+import { isEmpty } from "lodash";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const modalSlice = createSlice({
   name: "modal",
   initialState: {
     modalChosen: "",
+    // store what could be used on the opened modal, i.e. battleId for submitting ob entry
+    modalData: {
+      battleData: {},
+    },
     popup: {
       open: false,
       header: "",
@@ -13,7 +18,10 @@ export const modalSlice = createSlice({
   },
   reducers: {
     chooseModal: (state, action) => {
-      state.modalChosen = action.payload;
+      state.modalChosen = action.payload.modalChosen;
+      if (!isEmpty(action.payload.battleData)) {
+        state.modalData.battleData = action.payload.battleData;
+      }
     },
     setPopup: (state, action) => {
       state.popup = action.payload;

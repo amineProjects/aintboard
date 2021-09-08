@@ -1,3 +1,5 @@
+import { OnlineBattlesData } from "./types";
+
 //Redux types
 export type FilterState = {
   filter: {
@@ -11,6 +13,9 @@ export type FilterState = {
 export type ModalState = {
   modal: {
     modalChosen: string;
+    modalData: {
+      battleData: OnlineBattlesData;
+    };
     popup: {
       open: boolean;
       header: "";

@@ -1,7 +1,8 @@
 import nc from "next-connect";
 
-import { insertValidEntry } from "~/db/onlineBattle";
 import { all } from "~/middlewares/index";
+import { insertValidEntry } from "~/db/onlineBattle";
+import { VERIFIED_STATUS } from "util/constants/onlineBattles";
 
 const handler = nc();
 
@@ -14,7 +15,7 @@ handler.post(async (req, res) => {
     score,
     message,
     googleLink,
-    verifiedStatus = "pending",
+    verifiedStatus = VERIFIED_STATUS.PENDING,
   } = req.body;
 
   const entry = await insertValidEntry(req.db, {

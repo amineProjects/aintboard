@@ -129,16 +129,17 @@ export const getBattles = async (db, { first, offset, approved = null }) => {
     battles = await db.collection("online_battle").aggregate(aggregate);
 
     const allBattles = await battles.toArray();
-
     const battleCount = allBattles.length;
+    let message = "Online Battle retrieved";
+
+    if (battleCount === 1) {
+      message = "1 Online Battle retrieved";
+    } else if (battleCount > 1) {
+      message = `${battleCount} Online Battle retrieved`;
+    }
 
     return getSuccessResponse({
-      message:
-        battleCount === 1
-          ? "1 Online Battle retrieved"
-          : battleCount > 1
-          ? `${battleCount} Online Battle retrieved`
-          : `Online Battleretrieved`,
+      message,
       data: {
         onlineBattles: allBattles,
         totalOnlineBattlesCount,

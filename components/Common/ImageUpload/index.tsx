@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import { useState, useEffect, useRef } from "react";
 
 import ImagePreviewContainer from "./ImagePreviewContainer";
@@ -15,7 +16,7 @@ const ImageUpload = ({
   const prevPreviews = useRef<string[]>([]);
 
   useEffect(() => {
-    if (previews !== prevPreviews.current) {
+    if (!isEmpty(previews) && previews !== prevPreviews.current) {
       passImagesToParent(previews);
       prevPreviews.current = previews;
     }

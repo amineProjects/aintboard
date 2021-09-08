@@ -7,6 +7,7 @@ import { isEmpty } from "lodash";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 import RTE from "components/Common/RTE";
 import Input from "components/Common/Input";
@@ -21,18 +22,24 @@ import {
   ErrorMessage,
 } from "components/Common/inputStyled";
 import useCurrentUser from "hooks/useCurrentUser";
-import { upload } from "util/cloudinary";
-import { OB_STATUS, ONLINE_BATTLE_ITEM_COUNT } from "util/constants";
+import { ModalState } from "types/reduxTypes";
+import { ONLINE_BATTLE_ITEM_COUNT } from "util/constants";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const OnlineBattleForm = ({ closeModal }: Props) => {
+const SubmitEntryForm = ({ closeModal }: Props) => {
   const user = useCurrentUser();
   const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [details, setDetails] = useState("");
+
+  const battleData = useSelector(
+    (state: ModalState) => state.modal.modalData.battleData
+  );
+
+  console.log("submit-entry", { battleData });
 
   const formSchema = Yup.object().shape({
     bgName: Yup.string().required("Boardgame Name required"),
@@ -59,7 +66,6 @@ const OnlineBattleForm = ({ closeModal }: Props) => {
             toast.error("You need to upload a cover photo");
             return;
           }
-
           if (startDate && endDate) {
             const isStartDateSameDay = dayjs(startDate).isSame(
               new Date(),
@@ -73,40 +79,31 @@ const OnlineBattleForm = ({ closeModal }: Props) => {
               dayjs(startDate),
               "day"
             );
-
             if (!isStartDateSameDay && !isStartDateAfterToday) {
               toast.error("Start date should be today onwards.");
               return;
             }
-
             if (!isEndDateAfterStartDate) {
               toast.error("End date should be after start date.");
               return;
             }
           }
-
-          const uploadedImage = await upload(images);
-
+          // const uploadedImage = await upload(images);
           const userData = !isEmpty(user?.userData)
             ? JSON.parse(user?.userData || "")
             : { role: "" };
-
-          const response = await axios.post("/api/online-battles/", {
-            battleName: values.battleName,
-            createdBy: userData._id,
-            boardGameName: values.bgName,
-            bgImage: uploadedImage[0],
+          const response = await axios.post("/api/online-battle/entry", {
+            userId: userData._id,
             details,
-            eventStartDate: startDate,
-            eventEndDate: endDate,
-            status: OB_STATUS.PENDING,
+            // battleId,
+            // score,
+            // message,
+            // googleLink,
           });
-
           if (!response.data.success) {
             toast.error(response.data.message);
             return;
           }
-
           closeModal();
           resetForm();
           toast.success("New online battle added!");
@@ -115,7 +112,6 @@ const OnlineBattleForm = ({ closeModal }: Props) => {
               1 * ONLINE_BATTLE_ITEM_COUNT
             }`
           );
-
           if (router.pathname === "/online-battles") {
             router.reload();
           }
@@ -193,4 +189,4 @@ type Props = {
   closeModal: () => void;
 };
 
-export default OnlineBattleForm;
+export default SubmitEntryForm;

@@ -1,16 +1,20 @@
 import React from "react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { OnlineBattlesData } from "~/types/types";
-import Button from "../Common/Button";
+import { useDispatch } from "react-redux";
+import { chooseModal } from "redux/slices/modalSlice";
 
 import * as Styles from "./styled";
+import Button from "../Common/Button";
 import GoldIcon from "~/assets/img/Gold";
 import BronzeIcon from "~/assets/img/Bronze";
 import SilverIcon from "~/assets/img/Silver";
 import { createHTML } from "~/util/createHTML";
+import { OnlineBattlesData } from "~/types/types";
+import { SUBMIT_ENTRY_ONLINE_BATTLE_BUTTON } from "util/constants";
 
 const OnlineBattlePage = ({ onlineBattle }: Props) => {
+  const dispatch = useDispatch();
   return (
     <Styles.OnlineBattlePageWrapper>
       <Styles.EntryContainer>
@@ -30,7 +34,19 @@ const OnlineBattlePage = ({ onlineBattle }: Props) => {
           )}
         </Styles.EntryImg>
         <Styles.EntryRightSide>
-          <Button bg="white">Submit Entry</Button>
+          <Button
+            bg="white"
+            onClick={() =>
+              dispatch(
+                chooseModal({
+                  modalChosen: SUBMIT_ENTRY_ONLINE_BATTLE_BUTTON,
+                  battleData: onlineBattle,
+                })
+              )
+            }
+          >
+            Submit Entry
+          </Button>
           <Styles.RanksContainer>
             <Styles.Ranks>
               <Styles.Place>

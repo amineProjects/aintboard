@@ -17,12 +17,13 @@ const OnlineBattle = () => {
   const ref = useRef(true);
   const firstRender = ref.current;
   const [items, setItems] = useState<any>([]);
+  // we will use our own page size, not from swrInfinite, so that we will reset the page size everytime we visit the page
+  const [pageSize, setPageSize] = useState(1);
   const filters = useSelector((state: FilterState) => state.filter.filters);
   const currentFilter = useRef(filters?.secondSelected);
 
   const {
     data: filteredApiData,
-    size,
     setSize,
   } = useSWRInfinite<OnlineBattlesApiResponse>((pageIndex: number) => {
     const index = pageIndex + 1;
@@ -40,13 +41,13 @@ const OnlineBattle = () => {
     if (currentFilter.current !== filters?.secondSelected) {
       //overwrite new items, when filter has been changed
       setItems(
-        filteredApiData?.[size - 1]?.response?.data?.onlineBattles || []
+        filteredApiData?.[pageSize - 1]?.response?.data?.onlineBattles || []
       );
     } else {
       //concat when infinite scrolling
       setItems((items: any[]) =>
         items.concat(
-          filteredApiData?.[size - 1]?.response?.data?.onlineBattles || []
+          filteredApiData?.[pageSize - 1]?.response?.data?.onlineBattles || []
         )
       );
     }
@@ -60,8 +61,13 @@ const OnlineBattle = () => {
     <BattleCardWrapper>
       <InfiniteScroll
         dataLength={items.length}
-        next={() => setSize(size + 1)}
-        hasMore={filteredApiData?.[size - 1]?.response?.data?.hasMore || false}
+        next={() => {
+          setSize(pageSize + 1);
+          setPageSize(pageSize + 1);
+        }}
+        hasMore={
+          filteredApiData?.[pageSize - 1]?.response?.data?.hasMore || false
+        }
         loader={<h3>Loading...</h3>}
       >
         <BattleCardContainer className="box">

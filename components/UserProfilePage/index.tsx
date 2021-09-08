@@ -76,7 +76,7 @@ const UserProfilePage = ({
   const onButtonClick = (type: string) => {
     switch (type) {
       case CREATE_CHALLENGE_BUTTON:
-        dispatch(chooseModal(CREATE_CHALLENGE_BUTTON));
+        dispatch(chooseModal({ modalChosen: CREATE_CHALLENGE_BUTTON }));
         break;
     }
   };

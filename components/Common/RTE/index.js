@@ -46,10 +46,17 @@ const RTE = ({ savedContent = "", passContentToParent }) => {
 
   const convertContentToHTML = () => {
     let currentContentAsHTML = convertToRaw(editorState.getCurrentContent());
-    passContentToParent(draftToHtml(currentContentAsHTML));
-    // setConvertedContent(draftToHtml(currentContentAsHTML));
+    if (currentContentAsHTML !== undefined) {
+      // we need to do these checks to prevent rerender on the parent
+      // undefined and <p></p>\n are considered empty rich text
+      const draft = draftToHtml(currentContentAsHTML);
+      if (draft !== "<p></p>\n") {
+        passContentToParent(draft);
+      }
+    }
   };
 
+  // do not delete, could be used for preview
   // const createMarkup = (html) => {
   //   return {
   //     __html: DOMPurify.sanitize(html),
