@@ -162,8 +162,7 @@ export default function Header({
         !isGameNightsPage &&
         !isAchieveChallengePage && (
           <Styles.HomepageSubHeading>
-            Be a part of the best boardgame community. <br /> Make reviews and
-            strategies. Join challenges and online battles.
+            Make the best of your boardgame journey
           </Styles.HomepageSubHeading>
         )}
 
